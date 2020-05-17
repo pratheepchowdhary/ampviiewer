@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Viewer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+  <link href='https://fonts.googleapis.com/css?family=Questrial' rel='stylesheet' type='text/css'>
+  <script src="viewer.js"></script>
+  <style>
+    html, body {
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Questrial', Arial;
+    }
+
+    body, viewer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    viewer {
+      background: #eee;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+ 
+
+    @media screen and (min-width: 500px) {
+      header {
+        height: 64px;
+      }
+    }
+
+    header h1 {
+      font-size: 22px;
+      flex-grow: 1;
+    }
+
+    container {
+      padding: 8px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    container iframe {    
+      border: 0;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    viewer.natural container iframe {
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <viewer class="hidden" >
+    <container id="viewerHost"></container>
+  </viewer>
+  <ampdoc >
+  </ampdoc>
+</body>
+
+<script>
+  var viewerEl = document.getElementsByTagName("viewer")[0];
+  var ampDocEl = document.getElementsByTagName("ampdoc")[0];
+  var viewer;
+  function initViewer() {
+    var parameters = location.search.substring(1).split("&");
+    var temp = parameters[0].split("=");
+    var ampDocUrl = unescape(temp[1]);
+
+    // var ampDocUrl = ampDocEl.getAttribute('url');
+    var viewerHost = document.getElementById('viewerHost');
+    viewer = new Viewer(viewerHost, ampDocUrl);
+    viewer.setViewerShowAndHide(showViewer, hideViewer, isViewerHidden);
+    openAmpDocInViewer();
+  }
+  function hideViewer() {
+    viewerEl.classList.add('hidden');
+  }
+  function showViewer() {
+    viewerEl.classList.remove('hidden');
+  }
+  function isViewerHidden() {
+    return viewerEl.classList.contains('hidden');
+  }
+  function openAmpDocInViewer() {
+    viewer.attach();
+    showViewer();
+  }
+  window.onload = initViewer();
+</script>
+</html>
